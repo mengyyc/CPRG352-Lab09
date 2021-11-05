@@ -5,6 +5,7 @@ import java.util.List;
 import models.User;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import models.Role;
 
 /**
  *
@@ -55,8 +56,8 @@ public class UserDB {
 		EntityTransaction trans = em.getTransaction();
 
 		try {
-			List<User> users = em.createNamedQuery("User.findAll", User.class).getResultList();
-			users.remove(user);
+			Role role = user.getRole();
+			role.getUserList().remove(user);
 			trans.begin();
 			em.remove(em.merge(user));
 			em.merge(user);
