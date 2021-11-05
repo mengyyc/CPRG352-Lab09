@@ -23,22 +23,21 @@ public class UserServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
 		List<User> users = new ArrayList<User>();
-		List<Role> roles = null;
 
 		try {
-			roles = roleService.getAll();
+			List<Role> roles = roleService.getAll();
 			for (Role role : roles) {
 				List<User> tmp = role.getUserList();
 				tmp.forEach((user) -> {
 					users.add(user);
 				});
 			}
+
+			request.setAttribute("users", users);
+			request.setAttribute("roles", roles);
 		} catch (SQLException ex) {
 			Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
 		}
-
-		request.setAttribute("users", users);
-		request.setAttribute("roles", roles);
 
 		getServletContext().getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
 	}
@@ -77,6 +76,7 @@ public class UserServlet extends HttpServlet {
 			}
 		} catch(SQLException ex) {
 			Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
+			request.setAttribute("message", action);
 		}
 
 		this.doGet(request, response);

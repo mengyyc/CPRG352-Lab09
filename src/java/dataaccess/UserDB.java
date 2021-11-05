@@ -40,6 +40,8 @@ public class UserDB {
 		EntityTransaction trans = em.getTransaction();
 
 		try {
+			Role role = user.getRole();
+			role.getUserList().add(user);
 			trans.begin();
 			em.persist(user);
 			em.merge(user);
