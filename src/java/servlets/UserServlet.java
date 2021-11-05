@@ -60,7 +60,7 @@ public class UserServlet extends HttpServlet {
 		String password = request.getParameter("password");
 		String roleIdString = request.getParameter("roleId");
 		int roleId = 1;
-		if (roleIdString != null) roleId = Integer.parseInt(roleIdString);
+		if (roleIdString != null && !roleIdString.equals("Select the role")) roleId = Integer.parseInt(roleIdString);
 
 		try {
 			switch(action) {
