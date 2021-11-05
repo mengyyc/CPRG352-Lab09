@@ -55,6 +55,8 @@ public class UserDB {
 		EntityTransaction trans = em.getTransaction();
 
 		try {
+			List<User> users = em.createNamedQuery("User.findAll", User.class).getResultList();
+			users.remove(user);
 			trans.begin();
 			em.remove(em.merge(user));
 			em.merge(user);

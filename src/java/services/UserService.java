@@ -8,6 +8,7 @@ package services;
 import dataaccess.UserDB;
 import java.sql.SQLException;
 import java.util.List;
+import models.Role;
 import models.User;
 
 /**
@@ -15,6 +16,8 @@ import models.User;
  * @author lixia
  */
 public class UserService {
+	RoleService rs = null;
+
 	public User get(String email) throws SQLException {
 		UserDB userDB = new UserDB();
 		User user = userDB.get(email);
@@ -27,18 +30,27 @@ public class UserService {
 		return users;
 	}  	
 
-	public void insert(User user) throws SQLException {
+	public void insert(String email, boolean active, String firstName, String lastName, String password, int roleId) throws SQLException {
+		rs = new RoleService();
+		Role role = rs.get(roleId);
+		User user = new User(email, active, firstName, lastName, password);
+		user.setRole(role);
 		UserDB userDB = new UserDB();
 		userDB.insert(user);
 	}
 
-	public void update(User user) throws SQLException {
+	public void update(String email, boolean active, String firstName, String lastName, String password, int roleId) throws SQLException {
+		rs = new RoleService();
+		Role role = rs.get(roleId);
+		User user = new User(email, active, firstName, lastName, password);
+		user.setRole(role);
 		UserDB userDB = new UserDB();
 		userDB.update(user);
 	}
 	
-	public void delete(User user) throws SQLException {
+	public void delete(String email) throws SQLException {
 		UserDB userDB = new UserDB();
+		User user = userDB.get(email);
 		userDB.delete(user);
 	}
 }
