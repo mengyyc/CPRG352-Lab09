@@ -13,12 +13,12 @@ import models.Role;
  */
 public class UserDB {
 
-	public List<User> getAll() throws SQLException {
+	public List<User> getAll(int roleId) throws SQLException {
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();
 
 		try {
-			List<User> users = em.createNamedQuery("User.findAll", User.class).getResultList();
-			return users;
+			Role role = em.find(Role.class, roleId);
+			return  role.getUserList();
 		} finally {
 			em.close();
 		}

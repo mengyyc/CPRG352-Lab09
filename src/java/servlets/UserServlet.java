@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,12 +22,17 @@ public class UserServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
-		List<User> users = null;
+		List<User> users = new ArrayList<User>();
 		List<Role> roles = null;
 
 		try {
-			users = userService.getAll();
 			roles = roleService.getAll();
+			for (Role role : roles) {
+				List<User> tmp = role.getUserList();
+				tmp.forEach((user) -> {
+					users.add(user);
+				});
+			}
 		} catch (SQLException ex) {
 			Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
 		}
@@ -73,17 +79,7 @@ public class UserServlet extends HttpServlet {
 			Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
 		}
 
-//		this.doGet(request, response);
-		try {
-			List<Role> roles = roleService.getAll();
-			List<User> users = userService.getAll();
-			request.setAttribute("users", users);
-			request.setAttribute("roles", roles);
-		} catch (SQLException ex) {
-			Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
-		}
-
-		getServletContext().getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
+		this.doGet(request, response);
 	}
 
 }

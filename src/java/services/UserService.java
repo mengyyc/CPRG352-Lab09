@@ -24,9 +24,9 @@ public class UserService {
 		return user;
 	}
 
-	public List<User> getAll() throws SQLException {
+	public List<User> getAll(int roleId) throws SQLException {
 		UserDB userDB = new UserDB();
-		List<User> users = userDB.getAll();
+		List<User> users = userDB.getAll(roleId);
 		return users;
 	}  	
 
